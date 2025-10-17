@@ -24,7 +24,7 @@ app.get("/api/search", async (req, res) => {
     const response = await fetch(
       `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(
         query
-      )}&limit=10`,
+      )}&limit=8`,
       {
         headers: {
           Authorization: `Bearer ${EBAY_TOKEN}`,
