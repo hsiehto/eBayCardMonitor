@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
+import Link from "@mui/material/Link";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
@@ -27,38 +28,47 @@ function App() {
 
   return (
     <>
-      <TextField
-        id="standard-basic"
-        label="search an item"
-        variant="standard"
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
-      {searchResults.map((item, index) => {
-        return (
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="140"
-                image={item.image.imageUrl}
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {item.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {`${item.price.currency} ${item.price.value}`}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        );
-      })}
-      <Button variant="contained" color="success" onClick={handleSearch}>
-        search
-      </Button>
+      <div className="search-container">
+        <TextField
+          id="standard-basic"
+          label="search an item"
+          variant="standard"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <Button variant="contained" color="success" onClick={handleSearch}>
+          search
+        </Button>
+      </div>
+      <div className="flex-container">
+        {searchResults.map((item) => {
+          return (
+            <a href={item.itemWebUrl} key={item.itemId} target="_blank">
+              <Card sx={{ maxWidth: 345 }}>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={item.image.imageUrl}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h6" component="div">
+                      {item.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      {`${item.price.currency} ${item.price.value}`}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </a>
+          );
+        })}
+      </div>
     </>
   );
 }
