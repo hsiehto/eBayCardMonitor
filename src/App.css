@@ -12,7 +12,7 @@
 }
 
 .flex-item {
-  flex: 0 0 calc(33.3333% - 20px / 3); /* Adjust for gap */
+  flex: 0 0 calc(18% - 10px / 5); /* Adjust for gap */
   /* Explanation of flex property:
      - flex-grow: 0 (items will not grow to fill extra space)
      - flex-shrink: 0 (items will not shrink below their base size)
@@ -22,7 +22,6 @@
          (Assuming a 10px gap on each side of the item, resulting in 20px total gap per item)
   */
   box-sizing: border-box; /* Includes padding and border in the element's total width */
-  padding: 15px; /* Example padding */
-  background-color: lightblue; /* Example background */
   text-align: center; /* Example text alignment */
+  text-decoration: none;
 }
