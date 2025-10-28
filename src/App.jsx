@@ -8,6 +8,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Container from "@mui/material/Container";
+import Pagination from '@mui/material/Pagination';
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
@@ -16,6 +17,10 @@ function App() {
   const handleSearch = async () => {
     console.log(searchValue);
     const url = `http://localhost:5000/api/search?query=${searchValue}`;
+    if (searchValue === "") {
+        setSearchResults([])
+        return
+    }
     try {
       const response = await fetch(url);
       const result = await response.json();
@@ -47,8 +52,8 @@ function App() {
           </Button>
         </div>
         <div className="flex-container">
-          <div>{errorMessage}</div>
-          {!searchResults.length && <div>No search results</div>}
+          <div className="error-message">{errorMessage}</div>
+          {!searchResults.length && !errorMessage && <div>No search results</div>}
           {searchResults &&
             searchResults.map((item) => {
               return (
@@ -83,6 +88,7 @@ function App() {
               );
             })}
         </div>
+        {searchResults.length > 0 && <Pagination className="search-container" count={10} showFirstButton showLastButton />}
       </Container>
     </>
   );

@@ -25,3 +25,8 @@
   text-align: center; /* Example text alignment */
   text-decoration: none;
 }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
