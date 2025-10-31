@@ -8,19 +8,25 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Container from "@mui/material/Container";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const handleSearch = async () => {
-    console.log(searchValue);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
     const url = `http://localhost:5000/api/search?query=${searchValue}`;
     if (searchValue === "") {
-        setSearchResults([])
-        return
+      setSearchResults([]);
+      return;
     }
+    if (searchResults.length > 1) {
+      setSearchResults([]);
+    }
+    setIsLoading(true);
     try {
       const response = await fetch(url);
       const result = await response.json();
@@ -28,7 +34,9 @@ function App() {
         setErrorMessage(result.error.errors[0].message);
       } else {
         console.log("check");
+        // reset error & loading state
         setErrorMessage("");
+        setIsLoading(false);
         setSearchResults(result.itemSummaries);
       }
     } catch (error) {
@@ -40,20 +48,27 @@ function App() {
     <>
       <Container fixed>
         <div className="search-container">
-          <TextField
-            id="standard-basic"
-            label="search an item"
-            variant="standard"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <Button variant="contained" color="success" onClick={handleSearch}>
-            search
-          </Button>
+          <form onSubmit={handleSearch}>
+            <TextField
+              id="standard-basic"
+              label="search an item"
+              variant="standard"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <Button variant="contained" color="success" type="submit">
+              search
+            </Button>
+          </form>
+        </div>
+        <div className="flex-container">
+          {isLoading && <div className="loader "></div>}
         </div>
         <div className="flex-container">
           <div className="error-message">{errorMessage}</div>
-          {!searchResults.length && !errorMessage && <div>No search results</div>}
+          {!searchResults.length && !errorMessage && !isLoading && (
+            <div>No search results</div>
+          )}
           {searchResults &&
             searchResults.map((item) => {
               return (
@@ -88,7 +103,14 @@ function App() {
               );
             })}
         </div>
-        {searchResults.length > 0 && <Pagination className="search-container" count={10} showFirstButton showLastButton />}
+        {searchResults.length > 0 && (
+          <Pagination
+            className="search-container"
+            count={10}
+            showFirstButton
+            showLastButton
+          />
+        )}
       </Container>
     </>
   );
